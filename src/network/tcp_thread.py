@@ -5,6 +5,7 @@ import logging
 from src.core.battleship import Battleship
 from src.models.player import Player
 
+
 class TCPThread:
     def __init__(self, host: str, port: int, game_instance: Battleship):
         self.host = host
@@ -16,7 +17,6 @@ class TCPThread:
         self.socket.listen(2)
         self.socket.settimeout(1)
 
-    
     def run(self):
         while True:
             try:

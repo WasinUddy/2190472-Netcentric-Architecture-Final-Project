@@ -5,7 +5,6 @@ class Player(BaseModel):
     name: str
     ships: conlist(int, min_length=16, max_length=16)
 
-
     @field_validator('ships')
     def validate_state(cls, v):
         if len(set(v)) != len(v):
