@@ -1,6 +1,8 @@
 import json
 import socket
 import logging
+import websockets
+import asyncio
 from threading import Thread
 
 from src.core.battleship import Battleship
@@ -8,13 +10,14 @@ from src.models.player import Player
 
 
 class TCPThread(Thread):
-    def __init__(self, host: str, port: int, game_instance: Battleship):
-        super().__init__(daemon=True) # Avoid zombie threads
+    def __init__(self, host: str, port: int, game_instance: Battleship, web_uri: str = 'ws://127.0.0.1:1001'):
+        super().__init__(daemon=True)  # Avoid zombie threads
 
         self.host = host
         self.port = port
         self.game_instance = game_instance
 
+        self.web_uri = web_uri
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind((self.host, self.port))
         self.socket.listen(2)
@@ -101,3 +104,23 @@ class TCPThread(Thread):
         """
         for c in self.connections.values():
             c.sendall(json.dumps(payload).encode('utf-8'))
+
+        # Trigger websocket broadcast after sending TCP broadcast
+        self.trigger_websocket_broadcast()
+
+    def trigger_websocket_broadcast(self):
+        """
+        Triggers the websocket broadcast using asyncio.
+        """
+        asyncio.run(self._websocket_broadcast())
+
+    async def _websocket_broadcast(self):
+        """
+        The asynchronous method to handle websocket broadcasting.
+        """
+        try:
+            async with websockets.connect(self.web_uri) as websocket:
+                await websocket.send(json.dumps({'command': 'broadcast'}))
+                await websocket.recv()  # Optionally, handle server response if needed
+        except Exception as e:
+            logging.error(f"Failed to trigger websocket broadcast: {e}")
