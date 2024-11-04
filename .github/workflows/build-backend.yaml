@@ -30,4 +30,4 @@ jobs:
           file: Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/wasinuddy/netcentric-backend:latest, ghcr.io/wasinuddy/netcentric-backend:${{ github.ref }}
+          tags: ghcr.io/wasinuddy/netcentric-backend:latest, ghcr.io/wasinuddy/netcentric-backend:${{ github.ref_name }}
