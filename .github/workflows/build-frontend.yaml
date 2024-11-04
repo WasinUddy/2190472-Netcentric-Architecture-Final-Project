@@ -14,9 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Change directory # To find dockerfile
-        run: cd web
-
       - name: Build Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -30,8 +27,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: Dockerfile
+          context: ./web           # Set the context to the "web" folder
+          file: ./web/Dockerfile    # Path to the Dockerfile inside "web"
           platforms: linux/amd64
           push: true
           tags: ghcr.io/wasinuddy/netcentric-frontend:latest
