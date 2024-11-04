@@ -1,0 +1,194 @@
+* {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+
+.game-background {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    background-image: url('./assets/background.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.background-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.content-container {
+    position: relative;
+    z-index: 10;
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Game Title */
+.game-title {
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    color: white;
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+}
+
+/* Winner Banner */
+.winner-banner {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    animation: bounce 1s infinite;
+}
+
+.winner-text {
+    display: inline-block;
+    background-color: #fbbf24;
+    color: #111827;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+/* Game Card */
+.game-card {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Players Container */
+.players-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.player-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.player-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.player-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.player-one { color: #2563eb; }
+.player-two { color: #dc2626; }
+
+.score-text {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+    height: 1rem;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    transition: width 500ms ease-out;
+}
+
+.progress-low { background-color: #3b82f6; }
+.progress-medium { background-color: #10b981; }
+.progress-high { background-color: #ef4444; }
+
+/* Reset Button */
+.reset-button {
+    width: 100%;
+    background-color: #ef4444;
+    color: white;
+    font-weight: 700;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 300ms;
+    cursor: pointer;
+    border: none;
+}
+
+.reset-button:hover:not(:disabled) {
+    background-color: #dc2626;
+    transform: scale(1.05);
+}
+
+.reset-button:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.reset-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.reset-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Animations */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(-25%);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+        transform: translateY(0);
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}
