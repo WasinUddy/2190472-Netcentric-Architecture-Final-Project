@@ -30,4 +30,4 @@ jobs:
           file: ./web/Dockerfile    # Path to the Dockerfile inside "web"
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/wasinuddy/netcentric-frontend:latest
+          tags: ghcr.io/wasinuddy/netcentric-frontend:latest, ghcr.io/wasinuddy/netcentric-frontend:${{ github.ref }}
