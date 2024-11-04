@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 const BattleshipGame = () => {
-  const [player1Score, setPlayer1Score] = useState(3);
-  const [player2Score, setPlayer2Score] = useState(5);
+  const [player1Score, setPlayer1Score] = useState();
+  const [player2Score, setPlayer2Score] = useState(0);
   const [isResetting, setIsResetting] = useState(false);
   const [winner, setWinner] = useState(null);
   const [player1Name, setPlayer1Name] = useState('Player 1');
