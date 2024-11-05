@@ -1,6 +1,6 @@
 import threading
 import logging
-from typing import List
+from typing import List, Optional
 
 from src.models.player import Player
 
@@ -13,6 +13,7 @@ class Battleship:
         self.radar_screen = {}  # Store radar screen for each player
 
         self.lock = threading.Lock()
+        self.game_started = False
 
     def handle_attack(self, attacker: str, target_position: int):
         """
@@ -38,6 +39,8 @@ class Battleship:
                 attacker.radar_screen[target_position] = 1
             else:
                 attacker.radar_screen[target_position] = -1
+
+        self.game_round += 1
 
         return attacker.radar_screen
 
@@ -84,5 +87,6 @@ class Battleship:
         """
         Start the game by setting the game round to 1.
         """
+        self.game_started = True
         self.game_round = 1
         logging.info("Game started with two players connected.")
