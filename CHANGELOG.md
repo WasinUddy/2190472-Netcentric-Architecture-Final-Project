@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.3] - 2024-11-06
+### Fixed
+- Fixed a bug where the player would not be able to move after the first level
+
 ## [0.0.2] - 2024-11-05
 ### Fixed
 - Synchronized communication with GODOT
