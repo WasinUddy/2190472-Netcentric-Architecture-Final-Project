@@ -3,6 +3,7 @@ import websockets
 import json
 import logging
 from threading import Thread
+import socket
 
 
 class WebThread(Thread):
@@ -51,6 +52,7 @@ class WebThread(Thread):
             if payload['command'] == 'reset':
                 logging.info("Received 'reset' command, resetting game")
                 self.game_instance.handle_game_reset()
+
             elif payload['command'] == 'broadcast':
                 logging.info("Received 'broadcast' command, broadcasting game state")
                 await self.broadcast_game_state()

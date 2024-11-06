@@ -14,6 +14,8 @@ class Battleship:
 
         self.lock = threading.Lock()
         self.game_started = False
+        self.winner_history = []
+        self.resetted = False
 
     def handle_attack(self, attacker: str, target_position: int):
         """
@@ -74,6 +76,7 @@ class Battleship:
             if len(self.players) == 2:
                 self.start_game()
 
+
     def handle_game_reset(self) -> None:
         """
         Reset the game state.
@@ -81,6 +84,8 @@ class Battleship:
         with self.lock:
             self.players = []
             self.game_round = 0
+            self.game_started = False
+            self.resetted = True
             logging.info("Game has been reset.")
 
     def start_game(self) -> None:

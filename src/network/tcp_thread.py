@@ -30,9 +30,18 @@ class TCPThread(Thread):
 
     def run(self):
         logging.info("TCPThread started, waiting for player connections...")
+
+        # Start the _reset_listener as an independent asyncio task
+        asyncio.run(self._start_async_tasks())
+
+    async def _start_async_tasks(self):
+        # Create a task for _reset_listener so it can run concurrently
+        reset_task = asyncio.create_task(self._reset_listener())
+
+        # Main connection loop, using asyncio for non-blocking behavior
         while True:
             try:
-                conn, addr = self.socket.accept()
+                conn, addr = await asyncio.to_thread(self.socket.accept)
                 logging.info(f"New connection accepted from {addr}")
                 Thread(target=self._handle_connection, args=(conn, addr), daemon=True).start()
             except socket.timeout:
@@ -62,14 +71,17 @@ class TCPThread(Thread):
                 if winner and not self.winner_declared:
                     self.broadcast({'header': 'game_over', 'body': winner})
                     self.winner_declared = True
-                    logging.info(f"Game over! Winner: {winner}")
-
-                    self.trigger_websocket_broadcast()
-                    continue
+                    with self.game_instance.lock:
+                        self.game_instance.winner_history.append(winner)
+                    logging.info(f"Game over, winner: {winner}")
 
                 if author and author not in self.connections:
                     self.connections[author] = conn
                     logging.info(f"Player {author} connected from {addr}")
+
+                if self.connections == {}:
+                    logging.info("No players connected, ABORTING")
+                    break
 
                 if payload['header'] == 'init':
                     player = Player(name=payload['author'], ships=payload['body'])
@@ -79,8 +91,13 @@ class TCPThread(Thread):
                     self.trigger_websocket_broadcast()
 
                     if len(self.game_instance.players) == 2:
-                        self.pa = random.choice([0, 1])
-                        self.pb = abs(self.pa - 1)
+                        if not self.pa or not self.pb:
+                            self.pa = random.choice([0, 1])
+                            self.pb = abs(self.pa - 1)
+
+                        if len(self.game_instance.winner_history) > 0 and self.game_instance.winner_history[-1] != self.game_instance.players[self.pa].name:
+                            self.pa, self.pb = self.pb, self.pa
+
                         init_msg = {
                             'header': 'init',
                             'body': {
@@ -114,8 +131,19 @@ class TCPThread(Thread):
 
                     self.trigger_websocket_broadcast()
 
+                elif payload['header'] == 'reset':
+                    # Check if we got a winner
+                    self.trigger_websocket_broadcast()
+                    self.game_instance.handle_game_reset()
+                    self.broadcast({'header': 'reset'})
+                    self.winner_declared = False
 
+                    logging.info("Game reset")
 
+            except ConnectionAbortedError:
+                self.connections = {}
+                logging.info(f"Connection aborted by {addr}")
+                break
 
             except json.JSONDecodeError as e:
                 #logging.error(f"JSON decoding error from {addr}: {e}", exc_info=True)
@@ -162,3 +190,11 @@ class TCPThread(Thread):
                 logging.info(f"Received WebSocket response: {response}")
         except Exception as e:
             logging.error(f"Failed to trigger websocket broadcast: {e}", exc_info=True)
+
+    async def _reset_listener(self):
+        while True:
+            await asyncio.sleep(1)
+            if self.game_instance.resetted:
+                self.game_instance.resetted = False
+                self.broadcast({'header': 'reset'})
+                logging.info("Game reset broadcasted")
