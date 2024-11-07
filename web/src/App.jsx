@@ -15,7 +15,7 @@ const BattleshipGame = () => {
 
   useEffect(() => {
     // Establish WebSocket connection when the component mounts
-    const wsUrl = 'ws://netcentric.ase.cx:1000'
+    const wsUrl = window.WS_URL || 'ws://netcentric.ase.cx:1000';
     ws.current = new WebSocket(wsUrl);
 
     // WebSocket message listener
