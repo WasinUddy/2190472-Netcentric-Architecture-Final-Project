@@ -1,5 +1,5 @@
 import React from 'react';
-import './Leaderboard.css';
+import './leaderboard.css';
 
 const LeaderBoard = ({ winnerHistory }) => {
   // Ensure winnerHistory is an array before proceeding
