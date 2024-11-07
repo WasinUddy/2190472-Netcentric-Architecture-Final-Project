@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.4] - 2024-11-07
+### Fixed
+- Fix reset
+
 ## [0.0.3] - 2024-11-06
 ### Fixed
 - Fixed a bug where the player would not be able to move after the first level
