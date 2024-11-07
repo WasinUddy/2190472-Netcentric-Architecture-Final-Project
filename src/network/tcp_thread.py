@@ -140,6 +140,11 @@ class TCPThread(Thread):
 
                     logging.info("Game reset")
 
+                    # Clear the connections dict
+                    self.connections = {}
+                    break
+
+
             except ConnectionAbortedError:
                 self.connections = {}
                 logging.info(f"Connection aborted by {addr}")
@@ -175,7 +180,8 @@ class TCPThread(Thread):
                 'player2Score': self.game_instance.players[self.pb].radar_screen.count(1),
                 'player1Name': self.game_instance.players[self.pa].name,
                 'player2Name': self.game_instance.players[self.pb].name,
-                'winner': self.game_instance.check_winner()
+                'winner': self.game_instance.check_winner(),
+                'winner_history': self.game_instance.winner_history
             }
             asyncio.run(self._websocket_broadcast(payload))
         except Exception as e:
@@ -198,3 +204,7 @@ class TCPThread(Thread):
                 self.game_instance.resetted = False
                 self.broadcast({'header': 'reset'})
                 logging.info("Game reset broadcasted")
+
+                # Clear the connections dict
+                self.connections = {}
+                self.winner_declared = False
