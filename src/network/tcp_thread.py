@@ -113,8 +113,8 @@ class TCPThread(Thread):
                         'header': 'round',
                         'body': self.game_instance.game_round,
                         'names': {
-                            'A': self.game_instance.players[0].name,
-                            'B': self.game_instance.players[1].name
+                            'A': self.game_instance.players[self.pa].name,
+                            'B': self.game_instance.players[self.pb].name
                         }
                     }
                     logging.info(f"Round information prepared for {author}: {reply}")
