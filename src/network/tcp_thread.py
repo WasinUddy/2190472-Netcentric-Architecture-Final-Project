@@ -113,8 +113,8 @@ class TCPThread(Thread):
                         'header': 'round',
                         'body': self.game_instance.game_round,
                         'names': {
-                            'A': self.game_instance.players[0].name,
-                            'B': self.game_instance.players[1].name
+                            'A': self.game_instance.players[self.pa].name,
+                            'B': self.game_instance.players[self.pb].name
                         }
                     }
                     logging.info(f"Round information prepared for {author}: {reply}")
@@ -146,7 +146,7 @@ class TCPThread(Thread):
                 break
 
             except json.JSONDecodeError as e:
-                #logging.error(f"JSON decoding error from {addr}: {e}", exc_info=True)
+                #logging.error(f"JSON decoding error from {addr}: {received}", exc_info=True)
                 continue
             except Exception as e:
                 logging.error(f"Unexpected error handling connection from {addr}: {e}", exc_info=True)
@@ -171,10 +171,10 @@ class TCPThread(Thread):
         try:
             payload = {
                 'command': 'broadcast',
-                'player1Score': self.game_instance.players[0].radar_screen.count(1),
-                'player2Score': self.game_instance.players[1].radar_screen.count(1),
-                'player1Name': self.game_instance.players[0].name,
-                'player2Name': self.game_instance.players[1].name,
+                'player1Score': self.game_instance.players[self.pa].radar_screen.count(1),
+                'player2Score': self.game_instance.players[self.pb].radar_screen.count(1),
+                'player1Name': self.game_instance.players[self.pa].name,
+                'player2Name': self.game_instance.players[self.pb].name,
                 'winner': self.game_instance.check_winner()
             }
             asyncio.run(self._websocket_broadcast(payload))

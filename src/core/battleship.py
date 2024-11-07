@@ -34,13 +34,14 @@ class Battleship:
             attacker = self.players[1]
             defender = self.players[0]
 
-        with self.lock:
-            if target_position in defender.ships:
-                # Hit
-                logging.info(f"{attacker.name} hit a ship at position {target_position}.")
-                attacker.radar_screen[target_position] = 1
-            else:
-                attacker.radar_screen[target_position] = -1
+        if target_position != -1:
+            with self.lock:
+                if target_position in defender.ships:
+                    # Hit
+                    logging.info(f"{attacker.name} hit a ship at position {target_position}.")
+                    attacker.radar_screen[target_position] = 1
+                else:
+                    attacker.radar_screen[target_position] = -1
 
         self.game_round += 1
 
