@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
-import Leaderboard from "./assets/leaderboard.jsx";
+import Leaderboard from './assets/leaderboard.jsx';
 
 const BattleshipGame = () => {
   const [player1Score, setPlayer1Score] = useState(0);
@@ -23,6 +23,12 @@ const BattleshipGame = () => {
       const data = JSON.parse(event.data);
       console.log('Message from server:', data);
 
+      // Ensure winnerHistory is always an array
+      if (Array.isArray(data.winnerHistory)) {
+        setWinnerHistory(data.winnerHistory);
+      } else {
+        console.warn('Received invalid winnerHistory, expected an array.');
+      }
       // Handle incoming broadcast of game state
       if (data.player1Score !== undefined && data.player2Score !== undefined) {
         setPlayer1Score(data.player1Score);

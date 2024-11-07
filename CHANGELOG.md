@@ -1,5 +1,7 @@
 # Changelog
 
+##
+
 ## [0.0.7] - 2024-11-07
 ### Added
 - Dynamic Backend URL

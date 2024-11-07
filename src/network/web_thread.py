@@ -70,7 +70,7 @@ class WebThread(Thread):
             'player2Name': self.game_instance.players[1].name,
             'gameRound': self.game_instance.game_round,
             'winner': self.game_instance.check_winner(),
-            'winnnerHistory': self.game_instance.winner_history
+            'winnerHistory': self.game_instance.winner_history
         }
         for connection in self.connections:
             try:

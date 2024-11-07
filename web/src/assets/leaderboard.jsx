@@ -1,12 +1,30 @@
 import React from 'react';
-import './leaderboard.css';
+import './Leaderboard.css';
 
-const Leaderboard = ({ winnerHistory }) => {
+const LeaderBoard = ({ winnerHistory }) => {
+  // Ensure winnerHistory is an array before proceeding
+  if (!Array.isArray(winnerHistory)) {
+    console.error('Invalid winnerHistory prop. Expected an array.');
+    return null; // Or return a fallback UI if needed
+  }
+
+  // Handle case when winnerHistory is empty
+  if (winnerHistory.length === 0) {
+    return (
+      <div className="leaderboard">
+        <h2 className="leaderboard-title">Leaderboard</h2>
+        <p>No winners yet!</p>
+      </div>
+    );
+  }
+
+  // Count occurrences of each winner
   const countNames = winnerHistory.reduce((acc, name) => {
     acc[name] = (acc[name] || 0) + 1;
     return acc;
   }, {});
 
+  // Sort leaderboard by win count
   const leaderboard = Object.entries(countNames)
     .map(([name, count]) => ({ name, count }))
     .sort((a, b) => b.count - a.count);
@@ -26,4 +44,4 @@ const Leaderboard = ({ winnerHistory }) => {
   );
 };
 
-export default Leaderboard;
+export default LeaderBoard;
