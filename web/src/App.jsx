@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
+import Leaderboard from "./assets/leaderboard.jsx";
 
 const BattleshipGame = () => {
   const [player1Score, setPlayer1Score] = useState(0);
@@ -8,6 +9,7 @@ const BattleshipGame = () => {
   const [winner, setWinner] = useState(null);
   const [player1Name, setPlayer1Name] = useState('Player 1');
   const [player2Name, setPlayer2Name] = useState('Player 2');
+  const [winnerHistory, setWinnerHistory] = useState([]);
 
   const ws = useRef(null); // Use ref to store WebSocket instance
 
@@ -28,6 +30,7 @@ const BattleshipGame = () => {
         setPlayer1Name(data.player1Name);
         setPlayer2Name(data.player2Name);
         setWinner(data.winner);
+        setWinnerHistory(data.winnerHistory);
       }
     };
 
@@ -125,6 +128,7 @@ const BattleshipGame = () => {
           </button>
         </div>
       </div>
+      <Leaderboard winnerHistory={winnerHistory} />
     </div>
   );
 };
