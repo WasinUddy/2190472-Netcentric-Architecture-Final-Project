@@ -146,7 +146,7 @@ class TCPThread(Thread):
                 break
 
             except json.JSONDecodeError as e:
-                logging.error(f"JSON decoding error from {addr}: {received}", exc_info=True)
+                #logging.error(f"JSON decoding error from {addr}: {received}", exc_info=True)
                 continue
             except Exception as e:
                 logging.error(f"Unexpected error handling connection from {addr}: {e}", exc_info=True)
