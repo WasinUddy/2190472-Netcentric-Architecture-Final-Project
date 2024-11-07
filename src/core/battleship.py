@@ -1,3 +1,4 @@
+import time
 import threading
 import logging
 from typing import List, Optional
@@ -16,6 +17,7 @@ class Battleship:
         self.game_started = False
         self.winner_history = []
         self.resetted = False
+        self.last_win_ts = -10000
 
     def handle_attack(self, attacker: str, target_position: int):
         """
@@ -89,6 +91,20 @@ class Battleship:
             self.resetted = True
             logging.info("Game has been reset.")
 
+    def handle_winner_append(self, winner: str) -> None:
+        """
+        Append the winner to the winner history.
+
+        Args:
+            winner (str): The name of the winning player.
+        """
+        with self.lock:
+            if time.time() - self.last_win_ts < 5:  # Prevent winner duplication
+                return
+
+            self.last_win_ts = time.time()
+            self.winner_history.append(winner)
+
     def start_game(self) -> None:
         """
         Start the game by setting the game round to 1.
@@ -96,3 +112,4 @@ class Battleship:
         self.game_started = True
         self.game_round = 1
         logging.info("Game started with two players connected.")
+

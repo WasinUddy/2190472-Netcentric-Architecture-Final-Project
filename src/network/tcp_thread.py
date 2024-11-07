@@ -71,8 +71,7 @@ class TCPThread(Thread):
                 if winner and not self.winner_declared:
                     self.broadcast({'header': 'game_over', 'body': winner})
                     self.winner_declared = True
-                    with self.game_instance.lock:
-                        self.game_instance.winner_history.append(winner)
+                    self.game_instance.handle_winner_append(winner)
                     logging.info(f"Game over, winner: {winner}")
 
                 if author and author not in self.connections:

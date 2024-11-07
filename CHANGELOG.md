@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.10] - 2024-11-07
+### Fixed
+- Winner Duplication
+
 ## [0.0.9] - 2024-11-07
 ### Fixed
 - Fix leaderboard.css typo
