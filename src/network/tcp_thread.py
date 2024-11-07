@@ -181,7 +181,6 @@ class TCPThread(Thread):
                 'player1Name': self.game_instance.players[self.pa].name,
                 'player2Name': self.game_instance.players[self.pb].name,
                 'winner': self.game_instance.check_winner(),
-                'winner_history': self.game_instance.winner_history
             }
             asyncio.run(self._websocket_broadcast(payload))
         except Exception as e:
