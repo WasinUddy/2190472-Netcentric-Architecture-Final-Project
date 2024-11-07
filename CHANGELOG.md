@@ -1,6 +1,8 @@
 # Changelog
 
-##
+## [0.0.8] - 2024-11-07
+### Fixed
+- Fix winner typo
 
 ## [0.0.7] - 2024-11-07
 ### Added
